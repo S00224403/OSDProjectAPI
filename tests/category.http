@@ -1,0 +1,101 @@
+
+@port = 3000
+@categoryPath = /api/v1/categories
+@firstObjectID = {{getAllCategories.response.body.$[0]._id }}
+
+###
+### Post request for category 1
+###
+POST http://localhost:{{port}}{{categoryPath}} HTTP/1.1
+content-type: application/json
+
+{ "categoryName": "Basketball",
+    "description": "This is a basketball category",
+    "categoryImage": "testImage.jpg"
+}
+###
+### Post request for category 2
+###
+POST http://localhost:{{port}}{{categoryPath}} HTTP/1.1
+content-type: application/json
+
+{ "categoryName": "Football",
+    "description": "This is a football category",
+    "categoryImage": "testImage.jpg"
+}
+###
+### Post request which fails validation
+###
+POST http://localhost:{{port}}{{categoryPath}} HTTP/1.1
+content-type: application/json
+
+{ "categoryName": "te",
+    "description": "This is a test category",
+    "categoryImage": "testImage.jpg"
+}
+
+#######################################################################
+### GET requests
+#######################################################################
+###
+### Get request for all categories
+###
+# @name getAllCategories
+GET http://localhost:{{port}}{{categoryPath}} HTTP/1.1
+###
+### Get request for category 1
+###
+GET http://localhost:{{port}}{{categoryPath}}/{{firstObjectID}} HTTP/1.1
+###
+### Get request that fails validation due to id not found
+###
+GET http://localhost:{{port}}{{categoryPath}}/5f9b3b4b4b4b4b4b4b4b4b4b HTTP/1.1
+
+#######################################################################
+### PUT requests
+#######################################################################
+###
+### Put request for category 1
+###
+PUT http://localhost:{{port}}{{categoryPath}}/{{firstObjectID}} HTTP/1.1
+content-type: application/json
+
+{ "categoryName": "Basketball updated",
+    "description": "This is a basketball category updated",
+    "categoryImage": "testImage.jpg updated"
+}
+###
+### Put request that fails validation due to id not found
+###
+PUT http://localhost:{{port}}{{categoryPath}}/5f9b3b4b4b4b4b4b4b4b4b4b HTTP/1.1
+content-type: application/json
+
+{ "categoryName": "Basketball updated",
+    "description": "This is a basketball category updated",
+    "categoryImage": "testImage.jpg updated"
+}
+###
+### Put request that fails validation due invalid data
+###
+PUT http://localhost:{{port}}{{categoryPath}}/{{firstObjectID}} HTTP/1.1
+content-type: application/json
+
+{ "categoryName": "te",
+    "description": "This is a test category",
+    "categoryImage": "testImage.jpg"
+}
+
+#######################################################################
+### DELETE requests
+#######################################################################
+###
+### Delete request for category 1
+###
+DELETE http://localhost:{{port}}{{categoryPath}}/65539453aba02c680d8a8f85 HTTP/1.1
+###
+### Delete request that fails validation due to id not found
+###
+DELETE http://localhost:{{port}}{{categoryPath}}/5f9b3b4b4b4b4b4b4b4b4b4b HTTP/1.1
+###
+### Delete request that fails validation due to category being linked with object
+DELETE http://localhost:{{port}}{{categoryPath}}/{{firstObjectID}} HTTP/1.1

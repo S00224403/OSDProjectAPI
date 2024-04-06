@@ -1,0 +1,173 @@
+@port=3000
+@productPath=/api/v1/products
+@firstObjectID = {{getAllProducts.response.body.$[0]._id }}
+###################################################################################
+### POST Requests
+###################################################################################
+###
+### POST Request for product 1
+## First post request
+POST http://localhost:{{port}}{{productPath}} HTTP/1.1
+content-type: application/json
+
+{
+    "productName": "Product 1",
+    "description": "This is product 1",
+    "price": 100,
+    "quantityInStock": 200,
+    "manufacturer": "Manufacturer 1",
+    "productImage": "testImage",
+    "category": "6532c835f4ffd5f4fbb6bed9"
+}
+###
+### POST Request for product 2
+## Second post request
+POST http://localhost:{{port}}{{productPath}} HTTP/1.1
+content-type: application/json
+
+{
+    "productName": "Product 2",
+    "description": "This is product 2",
+    "price": 200,
+    "quantityInStock": 300,
+    "manufacturer": "Manufacturer 2",
+    "productImage": "testImage",
+    "category": "6532c835f4ffd5f4fbb6bed9"
+}
+###
+### POST Request that fails validation
+##
+POST http://localhost:{{port}}{{productPath}} HTTP/1.1
+content-type: application/json
+
+{
+    "productName": 2,
+    "description": "A",
+    "price": "200",
+    "quantityInStock": "200",
+    "manufacturer": "Manufacturer 2",
+    "productImage": "testImage"
+}
+###
+### POST Request that fails validation for category
+##
+POST http://localhost:{{port}}{{productPath}} HTTP/1.1
+content-type: application/json
+
+{
+    "productName": "Product 2",
+    "description": "This is product 2",
+    "price": 200,
+    "quantityInStock": 300,
+    "manufacturer": "Manufacturer 2",
+    "productImage": "testImage",
+    "category": "6532c839f4ffd5f4fbb6dddd"
+}
+###################################################################################
+### GET Requests
+###################################################################################
+###
+### GET Request for all products
+# @name getAllProducts
+GET http://localhost:{{port}}{{productPath}} HTTP/1.1
+content-type: application/json
+###
+### GET Request for product 1
+GET http://localhost:{{port}}{{productPath}}/{{firstObjectID}} HTTP/1.1
+content-type: application/json
+
+###################################################################################
+### PUT Requests
+###################################################################################
+###
+### PUT Request for a product
+PUT http://localhost:{{port}}{{productPath}}/{{firstObjectID}} HTTP/1.1
+content-type: application/json
+
+{ 
+    "productName": "Product 1 updated",
+    "description": "This is product 1 updated",
+    "price": 150,
+    "quantityInStock": 200,
+    "manufacturer": "Manufacturer 1 updated",
+    "productImage": "testImage updated",
+    "category": "6532c67b884d4c88a8c10ec8"
+}
+
+###
+### PUT Request for a product
+## Unsuccessful update due to id not found
+PUT http://localhost:{{port}}{{productPath}}/5f9b3b4b4b4b4b4b4b4b4b4b HTTP/1.1
+content-type: application/json
+
+{ 
+    "productName": "Product 1 updated",
+    "description": "This is product 1 updated",
+    "price": 150,
+    "quantityInStock": 200,
+    "manufacturer": "Manufacturer 1 updated",
+    "productImage": "testImage updated",
+    "category": "6532c67b884d4c88a8c10ec8"
+}
+###
+### PUT Request for a product
+## Unsuccessful update due to validation
+PUT http://localhost:{{port}}{{productPath}}/{{firstObjectID}} HTTP/1.1
+content-type: application/json
+
+{ 
+    "productName": "g",
+    "description": "This is product 1 updated",
+    "price": 2000,
+    "quantityInStock": "200",
+    "manufacturer": "Manufacturer 1 updated",
+    "productImage": "testImage updated",
+    "category": "6532c839f4ffd5f4fbb6bedb"
+}
+###
+### PUT Request for a product that fails category validation
+###
+PUT http://localhost:{{port}}{{productPath}}/{{firstObjectID}} HTTP/1.1
+content-type: application/json
+
+{ 
+    "productName": "Product 1 updated",
+    "description": "This is product 1 updated",
+    "price": 150,
+    "quantityInStock": 200,
+    "manufacturer": "Manufacturer 1 updated",
+    "productImage": "testImage updated",
+    "category": "6532c839f4ffd5f4fbb6dddd"
+}
+###################################################################################
+### DELETE Requests
+###################################################################################
+###
+### DELETE Request for a product
+## Successful delete
+DELETE http://localhost:{{port}}{{productPath}}/6553a19229ba6fcd67c62052 HTTP/1.1
+###
+### DELETE Request for a product
+## Unsuccessful delete
+DELETE http://localhost:{{port}}{{productPath}}/5f9b3b4b4b4b4b4b4b4b4b4b HTTP/1.1
+###
+### DELETE Request for a product
+## Unsuccessful delete due to product being in order
+DELETE http://localhost:{{port}}{{productPath}}/{{firstObjectID}} HTTP/1.1
+###
+###################################################################################
+### GET Requests with filters
+###################################################################################
+### Get request with quantity filter sorted by price
+GET http://localhost:{{port}}{{productPath}}?quantity=200 HTTP/1.1
+###
+### Get request with category filter
+GET http://localhost:{{port}}{{productPath}}?category=6532c67b884d4c88a8c10ec8 HTTP/1.1
+###
+### Get request with price filter
+GET http://localhost:{{port}}{{productPath}}?price=150 HTTP/1.1
+###
+### Get request with manufacturer filter
+GET http://localhost:{{port}}{{productPath}}?manufacturer=Manufacturer 1 HTTP/1.1
+
+

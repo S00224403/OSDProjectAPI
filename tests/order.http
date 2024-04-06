@@ -1,0 +1,252 @@
+@port = 3000
+@orderPath= /api/v1/orders
+@firstOrderId = {{getAllOrders.response.body.$[0]._id}}
+
+#######################################################################
+### POST Requests
+#######################################################################
+###
+### POST request for first order
+###
+POST http://localhost:{{port}}{{orderPath}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Order 1",
+    "email": "test@gmail.com",
+    "phone": "0871234567",
+    "address": {
+        "addressLine": "test address",
+        "town": "test town",
+        "county": "test county",
+        "zip": "F91 AAAA"
+    },
+    "products": [{
+        "productId": "6533e3761f49261766a771d1",
+        "quantity": 4,
+        "price": 10
+    },
+    {
+        "productId": "65538e922cfb40fda1168598",
+        "quantity": 2,
+        "price": 105
+    } 
+    ]
+}
+###
+### POST request for second order
+###
+POST http://localhost:{{port}}{{orderPath}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Order 2",
+    "email": "test2@gmail.com",
+    "phone": "0871234567",
+    "address": {
+        "addressLine": "test address 2",
+        "town": "test town 2",
+        "county": "test county 2",
+        "zip": "F91 BBBB"
+    },
+    "products": [{
+        "productId": "6533e3761f49261766a771d1",
+        "quantity": 4,
+        "price": 10
+    },
+    {
+        "productId": "65538e922cfb40fda1168598",
+        "quantity": 2,
+        "price": 105
+    } 
+    ]
+}
+###
+### POST request that fails validation
+###
+POST http://localhost:{{port}}{{orderPath}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Order 3",
+    "email": "test email",
+    "phone": "0871234567",
+    "address": {
+        "addressLine": "test address 3",
+        "town": "test town 3",
+        "county": "test county 3",
+        "zip": "F91 CCCC"
+    },
+    "products": [
+        {
+        "productId": "65352c6774194aa013a55aaa",
+        "quantity": 4,
+        "price": 10
+    },
+    {
+        "productId": "6532c66a884d4c88a8c10ec6",
+        "quantity": 2,
+        "price": 105
+    } 
+    ]
+}
+###
+### POST request that fails validation of product
+###
+POST http://localhost:{{port}}{{orderPath}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Order 4",
+    "email": "test@gmail.com",
+    "phone": "0871234567",
+    "address": {
+        "address": "test address 4",
+        "town": "test town 4",
+        "county": "test county 4",
+        "zip": "F91 DDDD"
+    },
+    "products": [{
+        "productId": "65352c6774194aa013a55aaa",
+        "quantity": 4,
+        "price": 10
+    },
+    {
+        "productId": "6532c66a884d4c88a8c10ec6",
+        "quantity": 2,
+        "price": 105
+    } 
+    ]
+}
+
+#######################################################################
+### GET Requests
+#######################################################################
+###
+### GET request for all orders
+###
+# @name getAllOrders
+GET http://localhost:{{port}}{{orderPath}} HTTP/1.1
+###
+### GET request for order by id
+###
+GET http://localhost:{{port}}{{orderPath}}/{{firstOrderId}} HTTP/1.1
+###
+### GET request for order by id that does not exist
+###
+GET http://localhost:{{port}}{{orderPath}}/123 HTTP/1.1
+
+#######################################################################
+### PUT Requests
+#######################################################################
+###
+### PUT request for order 
+###
+PUT http://localhost:{{port}}{{orderPath}}/{{firstOrderId}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Order 1 updated",
+    "email": "testUpdated@gmail.com",
+    "phone": "0899999999",
+    "address": {
+        "address": "test address updated",
+        "town": "test town updated",
+        "county": "test county updated",
+        "zip": "F91 EEEE"
+    },
+    "products": [{
+        "productId": "65352c6774194aa013a551a0",
+        "quantity": 4,
+        "price": 10
+    }
+    {
+        "productId": "6532c66a884d4c88a8c10ec6",
+        "quantity": 2,
+        "price": 105
+    } 
+    ]
+}
+###
+### PUT request for order that does not exist
+###
+PUT http://localhost:{{port}}{{orderPath}}/6533cb20a99d372fa5708a50 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Order 1 updated",
+    "email": "testUpdated@gmail.com",
+    "phone": "0899999999",
+    "address": {
+        "address": "test address updated",
+        "town": "test town updated",
+        "county": "test county updated",
+        "zip": "F91 EEEE"
+    },
+    "products": [{
+        "productId": "65352c6774194aa013a551a0",
+        "quantity": 4,
+        "price": 10
+    }
+    {
+        "productId": "6532c66a884d4c88a8c10ec6",
+        "quantity": 2,
+        "price": 105
+    } 
+    ]
+}
+###
+### PUT request for order that fails validation
+###
+PUT http://localhost:{{port}}{{orderPath}}/{{firstOrderId}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "O",
+    "email": "testUpdated",
+    "phone": "0899999999",
+    "address": {
+        "address": "test address updated",
+        "town": "test town updated",
+        "county": "test county updated",
+        "zip": "F91 EEEE"
+    },
+    "products": [
+        "6532c66a884d4c88a8c10ec6",
+        "6533cb20a99d372fa5708a50",
+        "6532c66a884d4c88a8c10ec6",
+        "6533cb20a99d372fa5708a50"
+    ]
+}
+###
+### PUT request for order that fails validation of product
+###
+PUT http://localhost:{{port}}{{orderPath}}/{{firstOrderId}} HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Order 1 updated",
+    "email": "testUpdated@gmail.com",
+    "phone": "0899999999",
+    "address": {
+        "address": "test address updated",
+        "town": "test town updated",
+        "county": "test county updated",
+        "zip": "F91 EEEE"
+    },
+    "products": [
+        "6532c839f4ffd5f4fbb6bedb"
+    ]
+}
+
+#######################################################################
+### DELETE Requests
+#######################################################################
+###
+### DELETE request for order by id
+###
+DELETE http://localhost:{{port}}{{orderPath}}/{{firstOrderId}} HTTP/1.1
+###
+### DELETE request for order by id that does not exist
+###
+DELETE http://localhost:{{port}}{{orderPath}}/123 HTTP/1.1

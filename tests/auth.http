@@ -1,0 +1,17 @@
+# @name testAuth
+POST https://dev-zjuu1sacbv0j7hv1.us.auth0.com/oauth/token
+content-type: application/json
+
+{"client_id":"DkAKy3UbPtVlplyahEJs5By4fVUjJyUW",
+"client_secret":"sZtliISjcIsX_fAI26PYzS7JT4kEEOzV7t1gr5hKMndyeO6e_SP6q_kH9M3wY2VM",
+"audience":"AssignmentWP2","grant_type":"client_credentials"}
+
+###
+POST http://localhost:3000/api/v1/categories
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1OZEhYMDJFZlBGSmxOanlHLXlLZSJ9.eyJpc3MiOiJodHRwczovL2Rldi16anV1MXNhY2J2MGo3aHYxLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJEa0FLeTNVYlB0VmxwbHlhaEVKczVCeTRmVlVqSnlVV0BjbGllbnRzIiwiYXVkIjoiQXNzaWdubWVudFdQMiIsImlhdCI6MTcwMjUwMTAyNCwiZXhwIjoxNzAyNTg3NDI0LCJhenAiOiJEa0FLeTNVYlB0VmxwbHlhaEVKczVCeTRmVlVqSnlVVyIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.T7Yiw3dXhobpeeYRWs3fooIpIJDpFgkyqtFJTQVLDyuNgag5LxibCiS3jGlfp10YoBIoABdt8LKEu66CcZGijHvV0wmYt_FUmRK3Q83_CUqnadBJi94vBwpGmFlrOOuUS1rvmgKpxU-W9yrBYpxX3vemXLlfEJcGuyQ7p0eDdwGaMrGQKCQh9MVuAohI4TroKZLW99_65nHAfr31nF4CzcvIuajFTxVOLwNyZpuXP2Nqe71Gcj3iCLH2jS3-vf7g_wDb_c7Y4tzB6oSS09NcqnDVkMErJcw4Bhs3BLJ22-1Fu9y84RgvYaOzYE50RF4oPSy1RFc2kParcm56pGqstw
+content-type: application/json
+
+{ "categoryName": "Auth Test",
+    "description": "This is a auth test category",
+    "categoryImage": "testImage.jpg"
+}
